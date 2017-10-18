@@ -1,1 +1,2 @@
 25 13 * * *  /usr/bin/python /home/centos/python2-aws/log2S3.py 
+55 14 * * *  /usr/bin/python /home/centos/python2-aws/mysql-backup.py 

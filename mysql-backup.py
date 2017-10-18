@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+from os.path import expanduser
 import boto3
 import datetime
 import os
@@ -7,9 +8,10 @@ import netrc
 
 machine = "db"
 info = netrc.netrc().authenticators(machine) 
-command = "docker exec  centos_db_1 /usr/bin/mysqldump -u {} --password={} test >test-db.sql".format(info[0],info[2])
+command = "/usr/bin/docker exec  centos_db_1 /usr/bin/mysqldump -u {} --password={} test >test-db.sql".format(info[0],info[2])
 os.system(command)
-path = os.getcwd()
+#path = os.getcwd()
+path = expanduser("~")
 
 
 # get S3 resource
