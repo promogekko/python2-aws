@@ -1,0 +1,1 @@
+25 13 * * *  /usr/bin/python /home/centos/python2-aws/log2S3.py 
