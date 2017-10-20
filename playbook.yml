@@ -1,0 +1,30 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Install require packages 
+      yum: name={{item}} state=present update_cache=yes
+      with_items:
+        - git 
+        - wget
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+    - name: Add docker repo
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    - name: Add ce edge
+      command:  yum-config-manager --enable docker-ce-edge
+    - name: Add ce test
+      command:  yum-config-manager --enable docker-ce-test
+    - name: Add docker package
+      yum: name=docker-ce state=present update_cache=yes
+    - name: set docker daemon 
+      command: systemctl enable docker
+    - name: start docker daemon 
+      command: systemctl start docker
+    - name: set vagrant in docker group 
+      command: usermod -aG docker vagrant
+    - name: Test docker 
+      command: docker run hello-world 
+
