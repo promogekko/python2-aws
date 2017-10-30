@@ -13,7 +13,7 @@ db:
   volumes: 
     - /var/log/mysql-db:/var/log/mysql
 phpmyadmin:
-  image: corbinu/docker-phpmyadmin
+  image: nazarpc/phpmyadmin
   links:
     - db:mysql
   ports:
