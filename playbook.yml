@@ -2,8 +2,11 @@
 
 - hosts: all
   become: true
+  become_user: centos
   tasks:
     - name: Install require packages 
+      become: true
+      become_user: root
       yum: name={{item}} state=present update_cache=yes
       with_items:
         - git 
@@ -12,19 +15,51 @@
         - device-mapper-persistent-data
         - lvm2
     - name: Add docker repo
+      become_user: root
       command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     - name: Add ce edge
+      become_user: root
       command:  yum-config-manager --enable docker-ce-edge
     - name: Add ce test
+      become_user: root
       command:  yum-config-manager --enable docker-ce-test
     - name: Add docker package
+      become_user: root
       yum: name=docker-ce state=present update_cache=yes
     - name: set docker daemon 
+      become_user: root
       command: systemctl enable docker
     - name: start docker daemon 
+      become_user: root
       command: systemctl start docker
-    - name: set vagrant in docker group 
-      command: usermod -aG docker vagrant
-    - name: Test docker 
-      command: docker run hello-world 
-
+    - name: set default user in docker group 
+      become_user: root
+      command: usermod -aG docker centos 
+    - name: Install epel 
+      become_user: root
+      yum: name=epel-release state=present update_cache=yes
+    - name: install python pip
+      become_user: root
+      yum: name=python-pip state=present update_cache=yes 
+    - name: Install docker compose
+      become_user: root
+      command:  pip install docker-compose
+    - name: Install pyopenssl and other
+      become_user: root
+      command:  pip install pyopenssl ndg-httpsclient pyasn1
+    - name: Update urllib3
+      become_user: root
+      command: pip install -U urllib3
+    - name: set python aws path 
+      stat: path=/home/centos/python2-aws
+      register: check_path 
+    - name: Print path
+      debug: msg="Path = {{ check_path.stat.exists }} "
+    - name: Get the git repository 
+      command: git clone https://github.com/promogekko/python2-aws.git
+      when: not check_path.stat.exists
+    - name: pull existing repository
+      command: chdir=/home/centos/python2-aws git pull
+      when: check_path.stat.exists == True
+    - name: do docker-compose
+      command: chdir=/home/centos/python2-aws docker-compose up -d 
