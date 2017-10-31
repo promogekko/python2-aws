@@ -3,6 +3,8 @@
 - hosts: all
   become: true
   become_user: centos
+  vars_files:
+    - vars/main.yml
   tasks:
     - name: Install require packages 
       become: true
@@ -63,3 +65,4 @@
       when: check_path.stat.exists == True
     - name: do docker-compose
       command: chdir=/home/centos/python2-aws docker-compose up -d 
+    - include: tasks/main.yml

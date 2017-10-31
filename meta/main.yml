@@ -1,0 +1,22 @@
+---
+galaxy_info:
+  author: herve meftah
+  description: Install Amazon AWS Command Line Interface to centos server.
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.0
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: centos
+    versions:
+    - all
+  - name: centos
+    versions:
+    - all
+  galaxy_tags:
+    - aws
+    - amazon
+    - cli
+dependencies: []
+allow_duplicates: yes
