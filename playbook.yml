@@ -64,5 +64,23 @@
       command: chdir=/home/centos/python2-aws git pull
       when: check_path.stat.exists == True
     - name: do docker-compose
+      become_user: root
       command: chdir=/home/centos/python2-aws docker-compose up -d 
     - include: tasks/main.yml
+    - name: Install python boto3
+      become_user: root
+      command: pip install boto3
+    - name: run copy logfiles to S3
+      command: /home/centos/python2-aws/log2S3.py
+    - name: Copy the .netrc conf file
+      copy:
+        dest: "/home/centos/.netrc"
+        owner: centos
+        mode: 0600 # needed since it contains a password
+        content: |
+             machine db 
+             login root
+             password password
+      become_user: centos
+    - name: run backup database test to S3
+      command: /home/centos/python2-aws/mysql-backup.py
