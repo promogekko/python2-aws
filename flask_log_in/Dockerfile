@@ -2,10 +2,13 @@ FROM centos:7
 MAINTAINER dockerlite@gmail.com
 
 RUN yum -y update && \
-    yum -y install git tar unzip wget python-pip 
+    yum -y install epel-release && \
+    yum -y install git tar unzip wget python-pip && \
+    python -m pip install -U pip && \
+    yum clean all
 
-ADD requirement.txt /
+ADD requirements.txt /
 
-RUN pip install -r requirement.txt
+RUN pip install -r /requirements.txt
 
 
