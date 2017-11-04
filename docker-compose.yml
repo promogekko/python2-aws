@@ -8,6 +8,8 @@ services:
  flask_login:
   hostname: flask
   build: ./flask_log_in
+  links: 
+    - db:mysql
   depends_on:
     - db
   ports:
@@ -21,6 +23,8 @@ services:
  web_application:
   hostname: web
   image: centos/httpd 
+  links: 
+    - db:mysql
   depends_on:
     - db
   ports:
@@ -42,6 +46,8 @@ services:
  phpmyadmin:
   hostname: phpmyadmin
   image: nazarpc/phpmyadmin
+  links: 
+    - db:mysql
   depends_on:
     - db
   ports:
