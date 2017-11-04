@@ -1,3 +1,12 @@
+flask_login:
+  build: ./flask_log_in
+  links:
+    - db:mysql
+  ports:
+    - 5000:5000
+  environment: 
+    DB_ROOT_PASSWORD: password
+  
 web_application:
   image: centos/httpd 
   links:
