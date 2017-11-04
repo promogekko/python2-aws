@@ -11,4 +11,15 @@ ADD requirements.txt /
 
 RUN pip install -r /requirements.txt
 
+RUN git clone https://github.com/promogekko/Flask-Login.git
+
+WORKDIR /Flask-Login
+
+EXPOSE 5000
+
+ENTRYPOINT ["python","app.py","runserver"]
+
+CMD ["-h=0.0.0.0"]
+
+
 
