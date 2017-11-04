@@ -5,7 +5,8 @@ flask_login:
   ports:
     - 5000:5000
   environment: 
-    DB_ROOT_PASSWORD: password
+    DB_USER_USERNAME: hme
+    DB_USER_PASSWORD: password
   
 web_application:
   image: centos/httpd 
