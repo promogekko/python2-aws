@@ -1,4 +1,11 @@
+version '2'
+
+networks:
+  lan_network:
+    driver: bridge
+
 flask_login:
+  hostname: flask
   build: ./flask_log_in
   links:
     - db:mysql
@@ -7,8 +14,11 @@ flask_login:
   environment: 
     DB_USER_USERNAME: hme
     DB_USER_PASSWORD: password
-  
+  networks:
+    - lan_networks  
+
 web_application:
+  hostname: web
   image: centos/httpd 
   links:
     - db:mysql
@@ -16,13 +26,20 @@ web_application:
     - 8080:80
   volumes:
     - /var/log/centos-web:/var/log/httpd
+  networks:
+    - lan_network
 db:
+  hostname: mysql
   image: astondevops/docker-mysql-5.6 
   environment:
     MYSQL_ROOT_PASSWORD: password
   volumes: 
     - /var/log/mysql-db:/var/log/mysql
+  networks:
+    - lan_network
+
 phpmyadmin:
+  hostname: phpmyadmin
   image: nazarpc/phpmyadmin
   links:
     - db:mysql
@@ -31,4 +48,5 @@ phpmyadmin:
   environment:
     MYSQL_USERNAME: root
     MYSQL_ROOT_PASSWORD: password 
-
+  networks:
+    - lan_network
