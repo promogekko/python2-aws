@@ -1,0 +1,2 @@
+[lunanode]
+xx.xxx.xxx.xxx     ansible_ssh_user=centos          ansible_ssh_private_key_file=/home/hme/.ssh/id_rsa
