@@ -6,4 +6,4 @@ This document describes how Cross Over company https://app.crossover.com/x/marke
 
 The solution contains the usage of docker-compose and AWS S3 using python boto3 package
 
-A Flask login app is added for testing the 10k connectivity issues.
+In the same time, this Docker containers plateform is used for testing the 10k connectivity issues of Flask-Login simple app as an example. 
