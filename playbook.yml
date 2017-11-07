@@ -1,8 +1,10 @@
 ---
 
-- hosts: all
+- hosts: lunanode 
   become: true
-  become_user: centos
+  remote_user: centos
+  become_method: sudo
+  become_user: root
   vars_files:
     - vars/main.yml
   tasks:
@@ -17,40 +19,28 @@
         - device-mapper-persistent-data
         - lvm2
     - name: Add docker repo
-      become_user: root
       command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     - name: Add ce edge
-      become_user: root
       command:  yum-config-manager --enable docker-ce-edge
     - name: Add ce test
-      become_user: root
       command:  yum-config-manager --enable docker-ce-test
     - name: Add docker package
-      become_user: root
       yum: name=docker-ce state=present update_cache=yes
     - name: set docker daemon 
-      become_user: root
       command: systemctl enable docker
     - name: start docker daemon 
-      become_user: root
       command: systemctl start docker
     - name: set default user in docker group 
-      become_user: root
       command: usermod -aG docker centos 
     - name: Install epel 
-      become_user: root
       yum: name=epel-release state=present update_cache=yes
     - name: install python pip
-      become_user: root
       yum: name=python-pip state=present update_cache=yes 
     - name: Install docker compose
-      become_user: root
       command:  pip install docker-compose
     - name: Install pyopenssl and other
-      become_user: root
       command:  pip install pyopenssl ndg-httpsclient pyasn1
     - name: Update urllib3
-      become_user: root
       command: pip install -U urllib3
     - name: set python aws path 
       stat: path=/home/centos/python2-aws
@@ -64,13 +54,12 @@
       command: chdir=/home/centos/python2-aws git pull
       when: check_path.stat.exists == True
     - name: do docker-compose
-      become_user: root
       command: chdir=/home/centos/python2-aws docker-compose up -d 
     - include: tasks/main.yml
     - name: Install python boto3
-      become_user: root
       command: pip install boto3
     - name: run copy logfiles to S3
+      become_user: centos
       command: /home/centos/python2-aws/log2S3.py
     - name: Copy the .netrc conf file
       copy:
@@ -81,6 +70,6 @@
              machine db 
              login root
              password password
-      become_user: centos
     - name: run backup database test to S3
+      become_user: centos
       command: /home/centos/python2-aws/mysql-backup.py
