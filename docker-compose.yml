@@ -5,6 +5,13 @@ networks:
     driver: bridge
 
 services:
+ digitaltoys:
+  hostname: digit
+  build: ./DigitalToys 
+  ports:
+    - 8282:8080
+  networks:
+    - lan_network
  flask_login:
   hostname: flask
   build: ./flask_log_in
