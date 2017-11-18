@@ -9,7 +9,7 @@ services:
   hostname: digit
   build: ./DigitalToys 
   ports:
-    - 8282:8080
+    - 8787:8080
   networks:
     - lan_network
  flask_login:
