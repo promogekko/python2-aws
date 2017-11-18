@@ -42,17 +42,8 @@
       command:  pip install pyopenssl ndg-httpsclient pyasn1
     - name: Update urllib3
       command: pip install -U urllib3
-    - name: set python aws path 
-      stat: path=/home/centos/python2-aws
-      register: check_path 
-    - name: Print path
-      debug: msg="Path = {{ check_path.stat.exists }} "
-    - name: Get the git repository 
-      command: git clone https://github.com/promogekko/python2-aws.git
-      when: not check_path.stat.exists
-    - name: pull existing repository
-      command: chdir=/home/centos/python2-aws git pull
-      when: check_path.stat.exists == True
+    - name: git clone
+      git: repo=https://github.com/promogekko/python2-aws.git dest=/home/centos/python2-aws update=yes
     - name: do docker-compose
       command: chdir=/home/centos/python2-aws docker-compose up -d 
     - include: tasks/main.yml
