@@ -77,3 +77,4 @@ wheels/
 *.egg
 MANIFEST
 playbook.retry
+tbl_user.sql
