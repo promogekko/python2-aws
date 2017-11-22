@@ -8,10 +8,10 @@ import netrc
 
 machine = "db"
 info = netrc.netrc().authenticators(machine) 
-command = "/usr/bin/docker exec  python2aws_db_1 /usr/bin/mysqldump -u {} --password={} BucketList.tbl_user >tbl_user.sql".format(info[0],info[2])
+command = "/usr/bin/docker exec  python2aws_db_1 /usr/bin/mysqldump -u {} --password={} BucketList tbl_user >tbl_user.sql".format(info[0],info[2])
 os.system(command)
-#path = os.getcwd()
-path = expanduser("~")
+path = os.getcwd()
+#path = expanduser("~")
 
 
 # get S3 resource
