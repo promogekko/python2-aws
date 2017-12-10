@@ -20,7 +20,7 @@ s3 = boto3.resource('s3')
 # create a web log bucket
 s3_client = boto3.client('s3')
 
-#-------- web log files ----------------------
+#-------- mysql backup files ----------------------
 backup_bucket_name = datetime.datetime.now().strftime('backup_%d_%m_%Y_%H_%M')
 s3_client.create_bucket(Bucket=backup_bucket_name)
 
